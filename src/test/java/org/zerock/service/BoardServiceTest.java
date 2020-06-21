@@ -1,4 +1,6 @@
-package org.zerock.persistence;
+package org.zerock.service;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -12,28 +14,29 @@ import org.zerock.domain.BoardVO;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"file:src/main/webapp/WEB-INF/spring/**/*.xml"})
-public class BoardDAOTest {
+public class BoardServiceTest {
 
-	private static final Logger logger = LogManager.getLogger(BoardDAOTest.class);
+	private static final Logger logger = LogManager.getLogger(BoardServiceTest.class);
 	
 	@Inject
-	private BoardDAO dao;
+	private BoardService service;
+	private Integer bno = 5;
 	
 	@Test
-	public void testCreate() throws Exception {
+	public void testRegist() throws Exception {
 		
 		BoardVO vo = new BoardVO();
 		vo.setTitle("뉴글");
 		vo.setContent("새로운 글이다");
-		vo.setWriter("user00");
-		dao.create(vo);
+		vo.setWriter("user00");		
+		service.regist(vo);
 		
 	}
 	
 	@Test
 	public void testRead() throws Exception {
-		
-		logger.debug(dao.read(3).toString());
+				
+		logger.debug(service.read(bno).toString());
 		
 	}
 	
@@ -41,17 +44,28 @@ public class BoardDAOTest {
 	public void testUpdate() throws Exception {
 		
 		BoardVO vo = new BoardVO();
-		vo.setBno(3);
+		vo.setBno(bno);
 		vo.setTitle("헌글");
 		vo.setContent("새로운 글이 아니다");
-		dao.update(vo);
+		service.modify(vo);
 		
 	}
 	
 	@Test
-	public void delete() throws Exception {
+	public void testDelete() throws Exception {
 		
-		dao.delete(3);
+		service.remove(bno);
+		
+	}
+	
+	@Test
+	public void testListAll() throws Exception {
+		
+		List<BoardVO> list = service.listAll();
+		
+		for(BoardVO vo : list) {
+			logger.debug(vo.toString());
+		}
 		
 	}
 	

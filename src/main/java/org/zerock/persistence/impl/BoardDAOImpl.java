@@ -1,4 +1,4 @@
-package org.zerock.persistence.Impl;
+package org.zerock.persistence.impl;
 
 import java.util.List;
 
