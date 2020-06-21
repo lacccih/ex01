@@ -12,6 +12,7 @@ import org.zerock.persistence.BoardDAO;
 @Repository
 public class BoardDAOImpl implements BoardDAO {
 
+	
 	@Inject
 	private SqlSession session;
 	
