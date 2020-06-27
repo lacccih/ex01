@@ -6,8 +6,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.zerock.domain.BoardVO;
 import org.zerock.service.BoardService;
@@ -36,10 +41,34 @@ public class BoardController {
 		return "redirect:/board/listAll";
 	}
 	
-	@RequestMapping(value = "/board/listAll", method = RequestMethod.GET)
+	@RequestMapping(value = "/listAll", method = RequestMethod.GET)
 	public void listAll(Model mo) throws Exception {
 		logger.info("show all list...");
 		mo.addAttribute("list",service.listAll());
+	}
+	
+	@RequestMapping(value = "/read", method = RequestMethod.GET)
+	public void read(@RequestParam("bno") int bno, Model mo) throws Exception {
+		mo.addAttribute(service.read(bno));
+	}
+	
+	@RequestMapping(value = "/remove", method = RequestMethod.POST)
+	public String remove(@RequestParam("bno") int bno, RedirectAttributes rttr) throws Exception {
+		service.remove(bno);
+		rttr.addFlashAttribute("msg", "success");
+		return "redirect:/board/listAll";
+	}
+	
+	@RequestMapping(value = "/modify", method = RequestMethod.GET)
+	public void modify(@RequestParam("bno") int bno, Model mo) throws Exception {
+		mo.addAttribute(service.read(bno));
+	}
+	
+	@RequestMapping(value = "/modify", method = RequestMethod.POST)
+	public String modify(BoardVO vo, RedirectAttributes rttr) throws Exception {
+		service.modify(vo);
+		rttr.addFlashAttribute("msg","success");
+		return "redirect:/board/listAll";
 	}
 	
 }

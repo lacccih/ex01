@@ -30,7 +30,7 @@
 
 <%@ include file="../include/footer.jsp" %>
 
-<script>
+<script type="text/javascript">
 	var result = "${msg}";
 	if(result == "success") alert("처리가 완료되었습니다.");
 </script>
