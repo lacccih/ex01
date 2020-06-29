@@ -6,15 +6,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.zerock.domain.BoardVO;
+import org.zerock.domain.Criteria;
+import org.zerock.domain.PageMaker;
 import org.zerock.service.BoardService;
 
 @Controller
@@ -69,6 +67,22 @@ public class BoardController {
 		service.modify(vo);
 		rttr.addFlashAttribute("msg","success");
 		return "redirect:/board/listAll";
+	}
+	
+	@RequestMapping(value = "/listCri", method = RequestMethod.GET)
+	public void listCri(Criteria cri, Model mo) throws Exception {
+		logger.info("show all list page with Criteria ...");
+		mo.addAttribute("list", service.listCriteria(cri));
+	}
+	
+	@RequestMapping(value = "/listPage", method = RequestMethod.GET)
+	public void listPage(Criteria cri, Model mo) throws Exception {
+		logger.info("cri.toString() = /n" + cri.toString());
+		mo.addAttribute("list", service.listCriteria(cri));
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCnt(service.listCountCriteria());
+		mo.addAttribute("pageMaker", pageMaker);
 	}
 	
 }

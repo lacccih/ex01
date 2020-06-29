@@ -7,12 +7,12 @@ import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 import org.zerock.domain.BoardVO;
+import org.zerock.domain.Criteria;
 import org.zerock.persistence.BoardDAO;
 
 @Repository
 public class BoardDAOImpl implements BoardDAO {
 
-	
 	@Inject
 	private SqlSession session;
 	
@@ -43,6 +43,23 @@ public class BoardDAOImpl implements BoardDAO {
 		return session.selectList(NAMESPACE + "listAll");
 	}
 
-	
+	@Override
+	public List<BoardVO> listPage(int page) throws Exception {
+		if(page <= 0) {
+			page = 1;
+		}
+		return session.selectList(NAMESPACE + "listPage", page);
+	}
+
+	@Override
+	public List<BoardVO> listCriteria(Criteria cri) throws Exception {
+		
+		return session.selectList(NAMESPACE + "listCriteria", cri);
+	}
+
+	@Override
+	public int countPaging() throws Exception {
+		return session.selectOne(NAMESPACE + "countPaging");
+	}
 	
 }

@@ -6,6 +6,7 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 import org.zerock.domain.BoardVO;
+import org.zerock.domain.Criteria;
 import org.zerock.persistence.BoardDAO;
 import org.zerock.service.BoardService;
 
@@ -47,6 +48,20 @@ public class BoardServiceImpl implements BoardService {
 	public List<BoardVO> listAll() throws Exception {
 		
 		return dao.listAll();
+		
+	}
+
+	@Override
+	public List<BoardVO> listCriteria(Criteria cri) throws Exception {
+		
+		return dao.listCriteria(cri);
+		
+	}
+
+	@Override
+	public int listCountCriteria() throws Exception {
+		
+		return dao.countPaging();
 		
 	}
 

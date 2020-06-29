@@ -25,4 +25,30 @@
 		]]>
 	</select>
 
+	<select id="listPage" resultType="BoardVO">
+		<![CDATA[
+			select      bno,title,content,writer,regdate,viewcnt
+			from        (   select      a.bno,a.title,a.content,a.writer,a.regdate,a.viewcnt,
+			                            rank() over(order by bno desc) as r
+			                from        tbl_board a )
+			where       r between ((#{page} - 1) * 5) and (#{page} * 5)
+		]]>
+	</select>
+	
+	<select id="listCriteria" resultType="BoardVO">
+		<![CDATA[
+			select      bno,title,content,writer,regdate,viewcnt
+			from        (   select      a.bno,a.title,a.content,a.writer,a.regdate,a.viewcnt,
+			                            rank() over(order by bno desc) as r
+			                from        tbl_board a )
+			where       r between ((#{page} - 1) * #{perPageNum}) + 1 and (#{page} * #{perPageNum})
+		]]>
+	</select>
+	
+	<select id="countPaging" resultType="int">
+		<![CDATA[
+			select count(bno) from tbl_board where bno > 0
+		]]>
+	</select>
+	
 </mapper>
